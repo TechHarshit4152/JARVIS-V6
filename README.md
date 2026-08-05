@@ -24,13 +24,6 @@ It is a modular AI operating environment capable of:
 
 ---
 
-## Current Progress
-
-- ✅ Stage 0 — Architecture & Design
-- 🚧 Stage 1 — Foundation
-
----
-
 ## Tech Stack
 
 - Python
