@@ -42,28 +42,38 @@ It is a modular AI operating environment capable of:
 ## Repository Structure
 
 ```text
-backend/
-frontend/
-core/
-modules/
-memory/
-ai/
-voice/
-automation/
-dashboard/
-integrations/
-database/
-config/
-assets/
-tests/
-scripts/
-docs/
-logs/
-models/
-plugins/
-tools/
-shared/
-launcher/
+JARVIS-V6/
+├── src/
+│   └── jarvis/
+│       ├── ai/
+│       ├── automation/
+│       ├── backend/
+│       ├── config/
+│       ├── core/
+│       ├── dashboard/
+│       ├── database/
+│       ├── integrations/
+│       ├── launcher/
+│       ├── memory/
+│       ├── modules/
+│       ├── shared/
+│       ├── tools/
+│       └── voice/
+│
+├── assets/
+├── docs/
+│   └── architecture/
+├── frontend/
+├── logs/
+├── models/
+├── plugins/
+├── scripts/
+├── tests/
+│
+├── .gitignore
+├── LICENSE
+├── pyproject.toml
+└── README.md
 ```
 
 ---
