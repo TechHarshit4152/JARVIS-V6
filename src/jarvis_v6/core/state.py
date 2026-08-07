@@ -19,7 +19,7 @@ class StateManager:
 
         self._is_speaking = value
 
-        self.logger.info(f"Speaking: {value}")
+        self.logger.info(f"State changed: Speaking={value}")
 
         self.event_bus.publish(
             "state.speaking.changed",
@@ -36,9 +36,9 @@ class StateManager:
         if self._is_listening == value:
             return
 
-        self.is_listening = value
+        self._is_listening = value
 
-        self.logger.info(f"Listening: {value}")
+        self.logger.info(f"State changed: Listening={value}")
 
         self.event_bus.publish(
             "state.listening.changed",
@@ -56,9 +56,9 @@ class StateManager:
         if self.is_thinking == value:
             return
 
-        self.is_thinking = value
+        self._is_thinking = value
 
-        self.logger.info(f"Thinking: {value}")
+        self.logger.info(f"State changed: Thinking={value}")
 
         self.event_bus.publish(
             "state.thinking.changed",

@@ -3,6 +3,7 @@ from jarvis_v6.core.container import container
 from jarvis_v6.core.event_bus import event_bus
 from jarvis_v6.core.logger import logger
 from jarvis_v6.core.state import StateManager
+from jarvis_v6.memory.manager import MemoryManager
 
 class Kernel():
     def __init__(self):
@@ -16,6 +17,10 @@ class Kernel():
             event_bus=self.event_bus
         )
 
+        self.memory = MemoryManager(
+            logger=self.logger
+        )
+
     def boot(self):
         self.logger.info("🚀 Booting JARVIS V6...")
 
@@ -23,6 +28,24 @@ class Kernel():
         self.container.register("logger", self.logger)
         self.container.register("event_bus", self.event_bus)
         self.container.register("state", self.state)
+        self.container.register("memory", self.memory)
+
+        MEMORY_EVENTS = [
+            "state.speaking.changed",
+            "state.listening.changed",
+            "state.thinking.changed"
+        ]
+
+        for event_name in MEMORY_EVENTS:
+            self.event_bus.subscribe(
+                event_name, 
+                lambda payload, event_name=event_name : self.memory.record(
+                    event_name,
+                    payload
+                )
+            )
+
+    
 
         self.event_bus.publish("kernel.booted")
 
