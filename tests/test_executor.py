@@ -19,9 +19,11 @@ class FailingTool(Tool):
     def execute(self, **kwargs):
         raise RuntimeError("Something went wrong")
 
+events=[]
 
 kernel.boot()
 logger = kernel.container.resolve("logger")
+event_bus = kernel.container.resolve("event_bus")
 
 registry = kernel.container.resolve("tools")
 tool = TestTool()
@@ -29,7 +31,29 @@ tool = TestTool()
 registry.register(tool)
 registry.register(FailingTool())
 
-executor = ToolExecutor(registry=registry, logger=logger)
+executor = ToolExecutor(registry=registry, logger=logger, event_bus=event_bus)
+
+event_bus.subscribe(
+    "tool.execution.started",
+    lambda payload: events.append(
+        ("started", payload)
+    )
+)
+
+event_bus.subscribe(
+    "tool.execution.completed",
+    lambda payload: events.append(
+        ("completed", payload)
+    )
+)
+
+event_bus.subscribe(
+    "tool.execution.failed",
+    lambda payload: events.append(
+        ("failed", payload)
+    )
+)
+
 
 result1 = executor.execute("test.tool")
 
@@ -48,4 +72,19 @@ print(result)
 
 assert result.success is False
 assert result.error == "Tool not registered: does.not.exist"
+
+assert events == [
+    ("started", {"tool": "test.tool"}),
+    ("completed", {"tool": "test.tool", "success": True}),
+    ("started", {"tool": "failing.tool"}),
+    ("failed", {
+        "tool": "failing.tool",
+        "error": "Something went wrong"
+    }),
+]
+
+assert not any(
+    event[1]["tool"] == "does.not.exist"
+    for event in events
+)
 
