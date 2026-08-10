@@ -6,6 +6,7 @@ from jarvis_v6.core.state import StateManager
 from jarvis_v6.memory.manager import MemoryManager
 from jarvis_v6.tools.registry import ToolRegistry
 from jarvis_v6.tools.executor import ToolExecutor
+from jarvis_v6.tasks.manager import TaskManager
 
 class Kernel():
     def __init__(self):
@@ -34,6 +35,11 @@ class Kernel():
             event_bus=self.event_bus
         )
 
+        self.tasks = TaskManager(
+            logger=self.logger,
+            event_bus=self.event_bus
+        )
+
     def boot(self):
         self.logger.info("🚀 Booting JARVIS V6...")
 
@@ -44,6 +50,7 @@ class Kernel():
         self.container.register("memory", self.memory)
         self.container.register("tools", self.tools)
         self.container.register("tool_executor", self.tool_executor)
+        self.container.register("tasks", self.tasks)
 
         MEMORY_EVENTS = [
             "state.speaking.changed",
