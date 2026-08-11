@@ -7,6 +7,7 @@ from jarvis_v6.memory.manager import MemoryManager
 from jarvis_v6.tools.registry import ToolRegistry
 from jarvis_v6.tools.executor import ToolExecutor
 from jarvis_v6.tasks.manager import TaskManager
+from jarvis_v6.ai.providers.webscout import WebscoutProvider
 
 class Kernel():
     def __init__(self):
@@ -40,6 +41,11 @@ class Kernel():
             event_bus=self.event_bus
         )
 
+        self.ai = WebscoutProvider(
+            model="@cf/meta/llama-3.1-70b-instruct",
+            system_prompt="You are JARVIS(Just A Rather Very Intelligent System), an intelligent assistant.",
+        )
+
     def boot(self):
         self.logger.info("🚀 Booting JARVIS V6...")
 
@@ -51,6 +57,7 @@ class Kernel():
         self.container.register("tools", self.tools)
         self.container.register("tool_executor", self.tool_executor)
         self.container.register("tasks", self.tasks)
+        self.container.register("ai", self.ai)
 
         MEMORY_EVENTS = [
             "state.speaking.changed",
