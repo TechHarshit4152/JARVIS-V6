@@ -8,6 +8,7 @@ from jarvis_v6.tools.registry import ToolRegistry
 from jarvis_v6.tools.executor import ToolExecutor
 from jarvis_v6.tasks.manager import TaskManager
 from jarvis_v6.ai.providers.webscout import WebscoutProvider
+from jarvis_v6.ai.system_prompt import SystemPromptBuilder
 
 class Kernel():
     def __init__(self):
@@ -43,7 +44,7 @@ class Kernel():
 
         self.ai = WebscoutProvider(
             model="@cf/meta/llama-3.1-70b-instruct",
-            system_prompt="You are JARVIS(Just A Rather Very Intelligent System), an intelligent assistant.",
+            system_prompt=SystemPromptBuilder().build(),
         )
 
     def boot(self):

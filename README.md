@@ -57,6 +57,7 @@ JARVIS-V6/
 │       ├── memory/
 │       ├── modules/
 │       ├── shared/
+│       ├── tasks/
 │       ├── tools/
 │       └── voice/
 │
